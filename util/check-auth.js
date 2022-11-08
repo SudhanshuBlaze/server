@@ -1,6 +1,5 @@
 const { AuthenticationError } = require("apollo-server");
 const jwt = require("jsonwebtoken");
-const { SECRET_KEY } = require("../config");
 // before creating or deleting a post we need to access request headers to check whether the user is authenticated or not.
 module.exports = context => {
   // context= {...headers}
@@ -16,7 +15,7 @@ module.exports = context => {
     if (token) {
       //we need to check that we issued the token and it's not expired
       try {
-        const user = jwt.verify(token, SECRET_KEY);
+        const user = jwt.verify(token, process.env.SECRET_KEY);
         return user;
       } catch (error) {
         throw new AuthenticationError("Invalid/Expired token");
